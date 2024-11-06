@@ -1,0 +1,7 @@
+dlib
+numpy
+opencv-python
+cmake
+face-recognition
+werkzeug==2.0.3
+flask

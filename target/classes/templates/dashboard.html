@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Attendance Dashboard</title>
+    <style>
+        /* Basic styles for the dashboard */
+    </style>
+</head>
+<body>
+    <h1>Attendance Dashboard</h1>
+    <img id="webcam-feed" alt="Webcam Feed" width="640" height="480" />
+    
+    <script>
+        async function fetchWebcamFeed() {
+            const img = document.getElementById("webcam-feed");
+            setInterval(async () => {
+                const response = await fetch("/camera-feed");
+                const blob = await response.blob();
+                img.src = URL.createObjectURL(blob); // Set webcam feed
+            }, 1000); // Adjust interval as needed
+        }
+
+        fetchWebcamFeed();
+    </script>
+</body>
+</html>
