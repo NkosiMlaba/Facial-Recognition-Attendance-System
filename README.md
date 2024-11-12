@@ -1,5 +1,6 @@
 # Facial-Recognition-Attendance-System
 
+cmake
 
 pip install -r dependencies/requirements.txt
 
