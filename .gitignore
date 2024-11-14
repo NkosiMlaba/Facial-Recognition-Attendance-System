@@ -2,3 +2,4 @@
 .venv
 target
 src/main/resources/Database
+src\main\resources\Database
