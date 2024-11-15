@@ -88,7 +88,7 @@ def insert_example_data():
         INSERT INTO Users (user_type, first_name, last_name, email, phone_number)
         VALUES ('Employee', 'John', 'Doe', 'john.doe@example.com', '123-456-7890')
     ''')
-    employee_id = cursor.lastrowid  # Get the generated user_id for the employee
+    employee_id = cursor.lastrowid
 
     # Insert into Employee table
     cursor.execute('''
@@ -101,7 +101,7 @@ def insert_example_data():
         INSERT INTO Users (user_type, first_name, last_name, email, phone_number)
         VALUES ('Student', 'Jane', 'Smith', 'jane.smith@example.edu', '987-654-3210')
     ''')
-    student_id = cursor.lastrowid  # Get the generated user_id for the student
+    student_id = cursor.lastrowid
 
     # Insert into Student table
     cursor.execute('''
