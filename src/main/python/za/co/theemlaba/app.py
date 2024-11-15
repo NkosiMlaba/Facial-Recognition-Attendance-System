@@ -1,8 +1,7 @@
-# app.py
 import cv2
 from flask import Flask, render_template, Response
 from face_recognition_service import load_faces_from_db, recognize_face
-from attendance_service import mark_attendance
+from database import mark_attendance
 
 app = Flask(__name__)
 video_capture = cv2.VideoCapture(0)
