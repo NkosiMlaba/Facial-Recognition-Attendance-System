@@ -1,4 +1,3 @@
-# database.py
 import sqlite3
 from datetime import datetime
 
@@ -39,7 +38,7 @@ def init_db():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Student (
             student_id INTEGER PRIMARY KEY REFERENCES Users(user_id),
-            student_number TEXT NOT NULL,
+            student_number TEXT NOT NULL UNIQUE,
             course TEXT,
             year_of_study INTEGER
         )
@@ -133,14 +132,7 @@ def insert_example_data():
         VALUES (?, '2023-10', 60.00, 'Student')
     ''', (student_id,))
 
-    # # Add photos for employee and student from file
-    # with open("King/nkosikhona_mlaba_photo.jpeg", "rb") as file:
-    #     employee_photo = file.read()
-    # cursor.execute('''
-    #     INSERT INTO User_Photos (user_id, photo)
-    #     VALUES (?, ?)
-    # ''', (employee_id, employee_photo))
-
+    # Add photo for student from file
     with open("King/nkosikhona_mlaba_photo.jpeg", "rb") as file:
         student_photo = file.read()
     cursor.execute('''
@@ -181,3 +173,7 @@ def mark_attendance(user_id, route):
 
     conn.commit()
     conn.close()
+
+if __name__ == "__main__":
+    init_db()
+    insert_example_data()
