@@ -1,5 +1,5 @@
 import cv2
-from flask import Flask, render_template, Response
+from flask import Flask, Response
 from face_recognition_service import load_faces_from_db, recognize_face
 from database import mark_attendance
 
@@ -26,18 +26,6 @@ def generate_frames(route):
         frame = buffer.tobytes()
         yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/arrival')
-def arrival():
-    return render_template('arrival.html')
-
-@app.route('/departure')
-def departure():
-    return render_template('departure.html')
-
 @app.route('/video_feed_arrival')
 def video_feed_arrival():
     return Response(generate_frames('arrival'), mimetype='multipart/x-mixed-replace; boundary=frame')
@@ -47,4 +35,4 @@ def video_feed_departure():
     return Response(generate_frames('departure'), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=5001, debug=True)
