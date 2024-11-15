@@ -1,15 +1,10 @@
-# face_recognition_service.py
 import numpy as np
 import cv2
 import face_recognition
-from database import get_connection
+from database import fetch_user_photos
 
 def load_faces_from_db():
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT user_id, photo FROM User_Photos")
-    records = cursor.fetchall()
-    conn.close()
+    records = fetch_user_photos()
 
     known_encodings = []
     user_ids = []
