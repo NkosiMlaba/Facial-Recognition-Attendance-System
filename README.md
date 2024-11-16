@@ -1,7 +1,7 @@
 # Facial-Recognition-Attendance-System
 
 ## Project Description:
-My vision for this project is to create a facial recognition system that can be used in schools, universitites, offices, and other places where attendance tracking is necessary. The system will use facial recognition technology to identify students or employees and record their attendance.
+My vision for this project is to create a facial recognition system that can be used in schools, universities, offices, and other places where attendance tracking is necessary. The system will use facial recognition technology to identify students or employees and record their attendance.
 
 ## Project Status ![Status](https://img.shields.io/badge/status-in%20progress-yellow)
 
