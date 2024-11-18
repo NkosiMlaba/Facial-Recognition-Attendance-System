@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Enrollment</title>
+</head>
+<body>
+    <h1>Enroll Student</h1>
+    <form action="/enroll-student" method="post" enctype="multipart/form-data">
+        <label>First Name: <input type="text" name="firstName" required></label><br>
+        <label>Last Name: <input type="text" name="lastName" required></label><br>
+        <label>Email: <input type="email" name="email"></label><br>
+        <label>Phone Number: <input type="text" name="phoneNumber"></label><br>
+        <label>Student Number: <input type="text" name="studentNumber" required></label><br>
+        <label>Course: <input type="text" name="course"></label><br>
+        <label>Year of Study: <input type="number" name="yearOfStudy"></label><br>
+        <label>Photo: <input type="file" name="photo" accept="image/*" required></label><br>
+        <button type="submit">Enroll</button>
+    </form>
+</body>
+</html>
