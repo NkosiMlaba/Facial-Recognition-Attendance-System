@@ -78,6 +78,21 @@ def init_db():
     conn.commit()
     conn.close()
 
+def drop_all_tables():
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    
+    tables = ['Users', 'Employee', 'Student', 'Attendance', 'Monthly_Hours', 'User_Photos', 'sqlite_sequence']
+    
+    for table in tables:
+        try:
+            cursor.execute(f"DROP TABLE IF EXISTS {table}")
+        except sqlite3.OperationalError as e:
+            continue
+    
+    conn.commit()
+    conn.close()
+
 def insert_example_data():
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
@@ -176,4 +191,5 @@ def mark_attendance(user_id, route):
 
 if __name__ == "__main__":
     init_db()
-    insert_example_data()
+    # insert_example_data()
+    # drop_all_tables()
