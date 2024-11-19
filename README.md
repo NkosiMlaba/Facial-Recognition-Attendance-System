@@ -12,6 +12,7 @@ My vision for this project is to create a facial recognition system that can be 
 ## System requirements:
 - Java
 - Python
+- Pip
 - Internet browser
 - SQLite
 - Maven
