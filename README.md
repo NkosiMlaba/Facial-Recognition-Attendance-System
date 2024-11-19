@@ -6,6 +6,7 @@ My vision for this project is to create a facial recognition system that can be 
 ## Project Status ![Status](https://img.shields.io/badge/status-in%20progress-yellow)
 
 ## Features implemented thus far:
+- Easy enrollment of students and employees
 - Attendance recording for arrival and departure
 
 ## System requirements:
