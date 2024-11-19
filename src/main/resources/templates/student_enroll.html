@@ -4,18 +4,28 @@
     <meta charset="UTF-8">
     <title>Student Enrollment</title>
 </head>
-<body>
-    <h1>Enroll Student</h1>
-    <form action="/enroll-student" method="post" enctype="multipart/form-data">
-        <label>First Name: <input type="text" name="firstName" required></label><br>
-        <label>Last Name: <input type="text" name="lastName" required></label><br>
-        <label>Email: <input type="email" name="email"></label><br>
-        <label>Phone Number: <input type="text" name="phoneNumber"></label><br>
-        <label>Student Number: <input type="text" name="studentNumber" required></label><br>
-        <label>Course: <input type="text" name="course"></label><br>
-        <label>Year of Study: <input type="number" name="yearOfStudy"></label><br>
-        <label>Photo: <input type="file" name="photo" accept="image/*" required></label><br>
-        <button type="submit">Enroll</button>
-    </form>
-</body>
+    <body onload="startCamera()">
+        
+        <h1>Enroll Student</h1>
+        <form id="enrollStudentForm" method="POST" action="/enroll-student">
+            <label>First Name: <input type="text" name="firstName" required></label><br>
+            <label>Last Name: <input type="text" name="lastName" required></label><br>
+            <label>Email: <input type="email" name="email"></label><br>
+            <label>Phone Number: <input type="text" name="phoneNumber"></label><br>
+            <label>Student Number: <input type="text" name="studentNumber" required></label><br>
+            <label>Course: <input type="text" name="course"></label><br>
+            <label>Year of Study: <input type="number" name="yearOfStudy"></label><br>
+            
+            <!-- photo capture -->
+            <div>
+                <video id="camera" width="400" autoplay></video>
+                <canvas id="photoCanvas" width="400" height="300" style="display:none;"></canvas>
+                <button type="button" onclick="capturePhoto()">Capture Photo</button>
+            </div>
+    
+            <input type="hidden" id="photoData" name="photoData" required>
+            <button type="submit">Enroll</button>
+        </form>
+        <script src="scripts/picture-capture.js"></script>
+    </body>
 </html>
