@@ -26,7 +26,7 @@ webapi: build
 
 .PHONY: run-webapi
 run-webapi: 
-	java -jar $(WEBAPI_JAR_FILE) 7000
+	java -jar $(WEBAPI_JAR_FILE)
 
 .PHONY: push
 push:
