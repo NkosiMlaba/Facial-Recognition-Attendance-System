@@ -201,6 +201,7 @@ def get_user_count():
     return count
 
 if __name__ == "__main__":
+    drop_all_tables()
     init_db()
     # insert_example_data()
-    # drop_all_tables()
+    
