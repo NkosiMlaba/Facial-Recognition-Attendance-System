@@ -189,6 +189,17 @@ def mark_attendance(user_id, route):
     conn.commit()
     conn.close()
 
+def get_user_count():
+    """Returns the number of users in the Users table."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute("SELECT COUNT(*) FROM Users")
+    count = cursor.fetchone()[0]
+    
+    conn.close()
+    return count
+
 if __name__ == "__main__":
     init_db()
     # insert_example_data()
