@@ -1,13 +1,17 @@
 import cv2
 from flask import Flask, Response
-from face_recognition_service import load_faces_from_db, recognize_face
+from face_recognition_service import load_faces_from_db, recognize_face, update_faces_if_new_user
 from database import mark_attendance
 
 app = Flask(__name__)
-video_capture = cv2.VideoCapture(0)
 known_encodings, user_ids = load_faces_from_db()
 
+import threading
+update_thread = threading.Thread(target=update_faces_if_new_user, daemon=True)
+update_thread.start()
+
 def generate_frames(route):
+    video_capture = cv2.VideoCapture(0)
     while True:
         success, img = video_capture.read()
         if not success:
