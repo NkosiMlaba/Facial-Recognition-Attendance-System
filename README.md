@@ -22,23 +22,12 @@ My vision for this project is to create a facial recognition system that can be 
 - Make
 - CMake
 
-## Installation
-#### Linux
-    python3 -m venv .venv
-    source .venv/bin/activate
-    pip install -r dependencies/requirements.txt
-
-#### Windows
-    python3 -m venv .venv
-    .\.venv\Scripts\activate
-    python.exe -m pip install --upgrade pip
-    pip install -r dependencies/requirements.txt
-
 ## Compiling and testing:
-1. Compile the project using: 
+1. Compile the project and install dependencies using: 
         
-        mvn package
-3. Run the tests using:
+        make all
+
+2. Run the tests using:
         
         make tests
 
