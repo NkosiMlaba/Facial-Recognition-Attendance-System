@@ -23,7 +23,7 @@ public class Database {
     }
 
     private void createDatabaseDirectory() {
-        File directory = new File(DATABASE_DIR);
+        File directory = new File("src/main/resources/database");
         if (!directory.exists()) {
             if (directory.mkdirs()) {
                 System.out.println("Database directory created.");
@@ -34,18 +34,96 @@ public class Database {
     }
 
     public void initialiseDatabase() {
-        String userTableSQL = """
-                CREATE TABLE IF NOT EXISTS Users (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    user_id TEXT UNIQUE,
-                    name TEXT,
-                    role TEXT,
-                    photo_path TEXT
-                );
-                """;
-        try (Connection conn = DriverManager.getConnection(URL);
-             PreparedStatement pstmt = conn.prepareStatement(userTableSQL)) {
-            pstmt.executeUpdate();
+        String createUsersTableSQL = """
+            CREATE TABLE IF NOT EXISTS Users (
+                user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_type TEXT CHECK(user_type IN ('Employee', 'Student')) NOT NULL,
+                first_name TEXT NOT NULL,
+                last_name TEXT NOT NULL,
+                email TEXT,
+                phone_number TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+            """;
+        
+        String createEmployeeTableSQL = """
+            CREATE TABLE IF NOT EXISTS Employee (
+                employee_id INTEGER PRIMARY KEY REFERENCES Users(user_id),
+                position TEXT,
+                department TEXT,
+                start_date DATE,
+                end_date DATE
+            );
+            """;
+        
+        String createStudentTableSQL = """
+            CREATE TABLE IF NOT EXISTS Student (
+                student_id INTEGER PRIMARY KEY REFERENCES Users(user_id),
+                student_number TEXT NOT NULL UNIQUE,
+                course TEXT,
+                year_of_study INTEGER
+            );
+            """;
+        
+        String createAttendanceTableSQL = """
+            CREATE TABLE IF NOT EXISTS Attendance (
+                attendance_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER REFERENCES Users(user_id),
+                check_in_time TIMESTAMP,
+                check_out_time TIMESTAMP,
+                attendance_date DATE NOT NULL
+            );
+            """;
+        
+        String createMonthlyHoursTableSQL = """
+            CREATE TABLE IF NOT EXISTS Monthly_Hours (
+                monthly_hours_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER REFERENCES Users(user_id),
+                month DATE NOT NULL,
+                total_hours DECIMAL(5, 2) NOT NULL,
+                user_type TEXT CHECK(user_type IN ('Employee', 'Student')) NOT NULL
+            );
+            """;
+        
+        String createUserPhotosTableSQL = """
+            CREATE TABLE IF NOT EXISTS User_Photos (
+                user_id INTEGER REFERENCES Users(user_id),
+                photo BLOB,
+                PRIMARY KEY (user_id)
+            );
+            """;
+        
+        try (Connection conn = DriverManager.getConnection(URL)) {
+            // Create Users table
+            try (PreparedStatement pstmt = conn.prepareStatement(createUsersTableSQL)) {
+                pstmt.executeUpdate();
+            }
+            
+            // Create Employee table
+            try (PreparedStatement pstmt = conn.prepareStatement(createEmployeeTableSQL)) {
+                pstmt.executeUpdate();
+            }
+    
+            // Create Student table
+            try (PreparedStatement pstmt = conn.prepareStatement(createStudentTableSQL)) {
+                pstmt.executeUpdate();
+            }
+    
+            // Create Attendance table
+            try (PreparedStatement pstmt = conn.prepareStatement(createAttendanceTableSQL)) {
+                pstmt.executeUpdate();
+            }
+    
+            // Create Monthly_Hours table
+            try (PreparedStatement pstmt = conn.prepareStatement(createMonthlyHoursTableSQL)) {
+                pstmt.executeUpdate();
+            }
+    
+            // Create User_Photos table
+            try (PreparedStatement pstmt = conn.prepareStatement(createUserPhotosTableSQL)) {
+                pstmt.executeUpdate();
+            }
+            
         } catch (SQLException e) {
             System.err.println("Error initializing database: " + e.getMessage());
         }
