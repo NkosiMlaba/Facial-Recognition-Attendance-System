@@ -3,4 +3,5 @@
 target
 src/main/resources/Database
 src\main\resources\Database
+src/main/resources/database
 __pycache__
