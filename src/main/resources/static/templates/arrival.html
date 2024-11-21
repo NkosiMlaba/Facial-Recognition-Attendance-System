@@ -2,9 +2,17 @@
 <html>
 <head>
     <title>Arrival Recognition</title>
+    <link href="styles/pause-camera.css" rel="stylesheet">
 </head>
 <body>
     <h1>Arrival Recognition</h1>
+    
+    <!-- Video feed display -->
     <img src="http://localhost:5001/video_feed_arrival" alt="Arrival Video Feed" />
+
+    <!-- Pause/Resume button -->
+    <button id="pause-btn" onclick="togglePause()">Pause Feed</button>
+
+    <script src="scripts/pause-camera.js"></script>
 </body>
 </html>
