@@ -143,14 +143,30 @@ public class WebServer {
             try {
                 String projectRoot = new File("").getAbsolutePath();
                 String pythonScriptPath = Paths.get(projectRoot, "src", "main", "python", "za", "co", "theemlaba", "app.py").toString();
-                String pythonExecutablePath = Paths.get(projectRoot, ".venv", "Scripts", "python.exe").toString();
                 
-                ProcessBuilder processBuilder = new ProcessBuilder(
-                    "powershell.exe", 
-                    "-Command", 
-                    pythonExecutablePath, 
-                    pythonScriptPath
-                );
+                // Detect OS
+                String os = System.getProperty("os.name").toLowerCase();
+                ProcessBuilder processBuilder;
+                
+                if (os.contains("win")) {
+                    // Windows path (assumes .venv is used in the project)
+                    String pythonExecutablePath = Paths.get(projectRoot, ".venv", "Scripts", "python.exe").toString();
+                    processBuilder = new ProcessBuilder(
+                        "powershell.exe", 
+                        "-Command", 
+                        pythonExecutablePath, 
+                        pythonScriptPath
+                    );
+                } else if (os.contains("nix") || os.contains("nux")) {
+                    // Linux path
+                    String pythonExecutablePath = Paths.get(projectRoot, ".venv", "bin", "python").toString();
+                    processBuilder = new ProcessBuilder(
+                        pythonExecutablePath, 
+                        pythonScriptPath
+                    );
+                } else {
+                    throw new UnsupportedOperationException("Unsupported OS: " + os);
+                }
                 
                 // Start the Python process
                 pythonProcess = processBuilder.start();
