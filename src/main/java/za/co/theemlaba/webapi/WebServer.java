@@ -6,16 +6,20 @@ import io.javalin.http.staticfiles.Location;
 import io.javalin.rendering.template.JavalinThymeleaf;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import java.io.File;
+import java.nio.file.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class WebServer {
     private static final Logger logger = LoggerFactory.getLogger(WebServer.class);
     private static Controller controller = new Controller();
+    private static Process pythonProcess = null;
     
 
     public static void main(String[] args) {
-        
+        startPythonScriptInBackground();
+
         Javalin app = startServer();
         
 
@@ -87,6 +91,19 @@ public class WebServer {
                 ctx.result("No photo uploaded.");
             }
         });
+
+        // Handle server shutdown gracefully
+        app.events(event -> {
+            event.serverStopping(() -> {
+                logger.info("Javalin server is stopping...");
+                stopPythonScript();
+            });
+        });
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            logger.info("JVM shutdown detected. Stopping Python process...");
+            stopPythonScript();
+        }));
     }
 
     public static Javalin startServer() {
@@ -119,5 +136,43 @@ public class WebServer {
 
     public static void logResponse(io.javalin.http.Context ctx) {
         logger.info("Responded with status {}", ctx.status());
+    }
+
+    public static void startPythonScriptInBackground() {
+        new Thread(() -> {
+            try {
+                String projectRoot = new File("").getAbsolutePath();
+                String pythonScriptPath = Paths.get(projectRoot, "src", "main", "python", "za", "co", "theemlaba", "app.py").toString();
+                String pythonExecutablePath = Paths.get(projectRoot, ".venv", "Scripts", "python.exe").toString();
+                
+                ProcessBuilder processBuilder = new ProcessBuilder(
+                    "powershell.exe", 
+                    "-Command", 
+                    pythonExecutablePath, 
+                    pythonScriptPath
+                );
+                
+                // Start the Python process
+                pythonProcess = processBuilder.start();
+                pythonProcess.waitFor();
+            } catch (Exception e) {
+                logger.error("Error starting Python script: " + e.getMessage(), e);
+            }
+        }).start();
+    }
+
+    public static void stopPythonScript() {
+        if (pythonProcess != null) {
+            logger.info("Stopping Python process...");
+            pythonProcess.destroy();
+            try {
+                pythonProcess.waitFor();
+                logger.info("Python process stopped.");
+            } catch (InterruptedException e) {
+                logger.error("Error waiting for Python process to stop: " + e.getMessage());
+            }
+        } else {
+            logger.info("No Python process to stop.");
+        }
     }
 }
