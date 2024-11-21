@@ -9,6 +9,8 @@ My vision for this project is to create a facial recognition system that can be 
 - Easy enrollment of students and employees
 - Recording for arrival and departure
 - Implemented concurrent checking for new user additions and ensure timely recognition of their faces
+- Camera feed pause button
+- Support for linux and windows, with os detection at runtime
 
 ## System requirements:
 - Java
