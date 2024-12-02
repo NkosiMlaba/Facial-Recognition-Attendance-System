@@ -180,15 +180,59 @@ public class WebServer {
     public static void stopPythonScript() {
         if (pythonProcess != null) {
             logger.info("Stopping Python process...");
-            pythonProcess.destroy();
             try {
-                pythonProcess.waitFor();
+                // Attempt to terminate the process gracefully
+                pythonProcess.destroy();
+                pythonProcess.destroyForcibly();
+
+                // Windows-specific: Kill python.exe from the virtual environment
+                String os = System.getProperty("os.name").toLowerCase();
+                if (os.contains("win")) {
+                    killPythonExeFromVenv();
+                }
+            } catch (Exception e) {
+                logger.error("Error stopping Python process: " + e.getMessage(), e);
+            } finally {
+                pythonProcess = null;
                 logger.info("Python process stopped.");
-            } catch (InterruptedException e) {
-                logger.error("Error waiting for Python process to stop: " + e.getMessage());
             }
         } else {
             logger.info("No Python process to stop.");
+        }
+    }
+    
+    // Helper method to kill python.exe from the virtual environment
+    private static void killPythonExeFromVenv() {
+        try {
+            String projectRoot = new File("").getAbsolutePath();
+            String venvPythonPath = Paths.get(projectRoot, ".venv", "Scripts", "python.exe").toString();
+    
+            Process taskListProcess = Runtime.getRuntime().exec("tasklist");
+            try (java.io.BufferedReader reader = new java.io.BufferedReader(
+                    new java.io.InputStreamReader(taskListProcess.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (line.startsWith("python.exe")) {
+                        String[] tokens = line.split("\\s+");
+                        int pid = Integer.parseInt(tokens[1]);
+    
+                        Process cmdProcess = Runtime.getRuntime().exec("wmic process where ProcessId=" + pid + " get ExecutablePath");
+                        try (java.io.BufferedReader cmdReader = new java.io.BufferedReader(
+                                new java.io.InputStreamReader(cmdProcess.getInputStream()))) {
+                            String cmdLine;
+                            while ((cmdLine = cmdReader.readLine()) != null) {
+                                if (cmdLine.trim().equalsIgnoreCase(venvPythonPath)) {
+                                    Runtime.getRuntime().exec("taskkill /PID " + pid + " /F");
+                                    logger.info("Killed python.exe with PID: " + pid + " from virtual environment.");
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Error killing python.exe from virtual environment: " + e.getMessage(), e);
         }
     }
 }
