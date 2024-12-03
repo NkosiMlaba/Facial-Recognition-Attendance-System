@@ -2,30 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Enrollment</title>
+    <link href="styles/common.css" rel="stylesheet">
 </head>
-    <body onload="startCamera()">
-        
+<body onload="startCamera()">
+    <nav>
+        <a href="/">Dashboard</a>
+    </nav>
+    <div class="container">
         <h1>Enroll Student</h1>
         <form id="enrollStudentForm" method="POST" action="/enroll-student">
-            <label>First Name: <input type="text" name="firstName" required></label><br>
-            <label>Last Name: <input type="text" name="lastName" required></label><br>
-            <label>Email: <input type="email" name="email"></label><br>
-            <label>Phone Number: <input type="text" name="phoneNumber"></label><br>
-            <label>Student Number: <input type="text" name="studentNumber" required></label><br>
-            <label>Course: <input type="text" name="course"></label><br>
-            <label>Year of Study: <input type="number" name="yearOfStudy"></label><br>
-            
-            <!-- photo capture -->
-            <div>
+            <div class="input-section">
+                <!-- Input Fields -->
+                <label>First Name: <input type="text" name="firstName" required></label>
+                <label>Last Name: <input type="text" name="lastName" required></label>
+                <label>Email: <input type="email" name="email"></label>
+                <label>Phone Number: <input type="text" name="phoneNumber"></label>
+                <label>Student Number: <input type="text" name="studentNumber" required></label>
+                <label>Course: <input type="text" name="course"></label>
+                <label>Year of Study: <input type="number" name="yearOfStudy"></label>
+            </div>
+
+            <!-- Camera Section -->
+            <div class="camera-section">
                 <video id="camera" width="400" autoplay></video>
                 <canvas id="photoCanvas" width="400" height="300" style="display:none;"></canvas>
                 <button type="button" onclick="capturePhoto()">Capture Photo</button>
+
+                <!-- Hidden Field & Submit -->
+                <input type="hidden" id="photoData" name="photoData" required>
+                <button type="submit">Enroll</button>
             </div>
-    
-            <input type="hidden" id="photoData" name="photoData" required>
-            <button type="submit">Enroll</button>
         </form>
-        <script src="scripts/picture-capture.js"></script>
-    </body>
+    </div>
+    <script src="scripts/picture-capture.js"></script>
+</body>
 </html>
