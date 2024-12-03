@@ -1,18 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arrival Recognition</title>
-    <link href="styles/pause-camera.css" rel="stylesheet">
+    <link href="styles/common.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Arrival Recognition</h1>
-    
-    <!-- Video feed display -->
-    <img src="http://localhost:5001/video_feed_arrival" alt="Arrival Video Feed" />
-
-    <!-- Pause/Resume button -->
-    <button id="pause-btn" onclick="togglePause()">Pause Feed</button>
-
+    <nav>
+        <a href="/">Dashboard</a>
+    </nav>
+    <div class="container">
+        <h1>Arrival Recognition</h1>
+        <img src="http://localhost:5001/video_feed_arrival" alt="Arrival Video Feed">
+        <button id="pause-btn" onclick="togglePause()">Pause Feed</button>
+    </div>
     <script src="scripts/pause-camera.js"></script>
 </body>
 </html>
